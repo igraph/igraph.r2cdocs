@@ -4,7 +4,7 @@ NULL
 
 #' @export
 roxy_tag_parse.roxy_tag_cdocs <- function(x) {
-  roxygen2::tag_value(x)
+  roxygen2::tag_words(x)
 }
 
 #' @export
