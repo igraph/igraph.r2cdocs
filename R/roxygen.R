@@ -39,14 +39,6 @@ present_cdocs_link <- function(value) {
   paste(strings, collapse = "\n")
 }
 
-#' @export
-merge.rd_section_cdocs <- function(x, y, ...) {
-  stopifnot(identical(class(x), class(y)))
-
-  dedup <- unique(c(x$value, y$value))
-
-  format.rd_section_cdocs(x = list(value = dedup))
-}
 
 #' @export
 cdocs_roclet <- function() {
