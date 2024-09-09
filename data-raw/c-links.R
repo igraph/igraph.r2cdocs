@@ -17,4 +17,4 @@ handle_dt <- function(dt) {
 
 clinks <- purrr::map_df(entries, handle_dt)
 
-usethis::use_data(clinks, overwrite = TRUE, internal = TRUE)
+write.csv(clinks, file.path("inst", "clinks.csv"), row.names = FALSE)
