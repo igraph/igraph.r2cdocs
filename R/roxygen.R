@@ -34,7 +34,7 @@ present_cdocs_link <- function(value) {
     sprintf("\\item \\href{%s}{%s}", df$url, df$method)
   }
 
-  strings <- map_chr(value, format_cdocs_single_link, clinks = clinks)
+  strings <- map_chr(value, format_cdocs_single_link, clinks = clinks())
 
   paste(strings, collapse = "\n")
 }
@@ -57,4 +57,8 @@ roclet_process.roclet_cdocs <- function(x, blocks, env, base_path) {
 #' @importFrom roxygen2 block_get_tags roclet_output
 roclet_output.roclet_cdocs <- function(x, results, base_path, ...) {
   x
+}
+
+clinks <- function() {
+  read.csv(system.file("clinks.csv", package = "igraph.r2cdocs"))
 }
