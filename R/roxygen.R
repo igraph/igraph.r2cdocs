@@ -34,7 +34,7 @@ present_cdocs_link <- function(value) {
     sprintf("\\item \\href{%s}{%s}", df$url, df$method)
   }
 
-  strings <- map_chr(value, format_cdocs_single_link, clinks = clinks())
+  strings <- map_chr(unique(value), format_cdocs_single_link, clinks = clinks())
 
   paste(strings, collapse = "\n")
 }
