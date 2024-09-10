@@ -15,10 +15,8 @@ roxy_tag_rd.roxy_tag_cdocs <- function(x, base_path, env) {
 #' @export
 format.rd_section_cdocs <- function(x, ...) {
   paste0(
-    "\\section{Related documentation in the C library}{\n",
-    "\\itemize{\n",
+    "\\section{Related documentation in the C library}{",
   present_cdocs_link(x[["value"]]),
-    "}\n",
     "}\n"
   )
 }
@@ -31,12 +29,12 @@ present_cdocs_link <- function(value) {
     if (nrow(df) == 0) {
       cli::cli_warn("Can't find C entry for {x}!")
     }
-    sprintf("\\item \\href{%s}{\\code{%s()}}", df$url, df$method)
+    sprintf("\\href{%s}{\\code{%s()}}", df$url, df$method)
   }
 
   strings <- map_chr(unique(value), format_cdocs_single_link, clinks = clinks())
 
-  paste(strings, collapse = "\n")
+  paste(strings, collapse = ", ")
 }
 
 
