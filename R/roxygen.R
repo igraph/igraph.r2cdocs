@@ -17,7 +17,7 @@ format.rd_section_cdocs <- function(x, ...) {
   paste0(
     "\\section{Related documentation in the C library}{",
   present_cdocs_link(x[["value"]]),
-    "}\n"
+    ".}\n"
   )
 }
 
