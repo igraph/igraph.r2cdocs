@@ -31,7 +31,7 @@ present_cdocs_link <- function(value) {
     if (nrow(df) == 0) {
       cli::cli_warn("Can't find C entry for {x}!")
     }
-    sprintf("\\item \\href{%s}{%s}", df$url, df$method)
+    sprintf("\\item \\href{%s}{\\code{%s()}}", df$url, df$method)
   }
 
   strings <- map_chr(unique(value), format_cdocs_single_link, clinks = clinks())
