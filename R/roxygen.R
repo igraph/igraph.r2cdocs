@@ -12,20 +12,10 @@ roxy_tag_rd.roxy_tag_cdocs <- function(x, base_path, env) {
   roxygen2::rd_section("cdocs", x$val)
 }
 
-#' @export
-format.rd_section_cdocs <- function(x, ...) {
-  paste0(
-    "\\section{Related documentation in the C library}{",
-  present_cdocs_link(x[["value"]]),
-    ".}\n"
-  )
-}
-
 present_cdocs_link <- function(value) {
-
   format_cdocs_single_link <- function(x, clinks) {
-  # we can use igraph_ or not
-    df <- clinks[clinks$method %in% c(x, sprintf("igraph_%s", x)),]
+    # we can use igraph_ or not
+    df <- clinks[clinks$method %in% c(x, sprintf("igraph_%s", x)), ]
     if (nrow(df) == 0) {
       cli::cli_warn("Can't find C entry for {x}!")
     }
