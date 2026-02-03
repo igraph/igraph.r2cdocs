@@ -17,4 +17,6 @@ URL: https://github.com/igraph/igraph.r2cdocs
 BugReports: https://github.com/igraph/igraph.r2cdocs/issues
 Imports: 
     rlang,
-    roxygen2
+    roxygen2,
+    treesitter,
+    treesitter.r
