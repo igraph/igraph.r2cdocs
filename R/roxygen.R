@@ -92,7 +92,7 @@ format_cdocs_single_link <- function(x, base_path) {
     cli::cli_warn("Can't find C entry for {x}!")
     return("")
   }
-  sprintf("\\href{%s}{\\code{%s()}}", df$url, sub("igraph_", "", df$method))
+  sprintf("\\href{%s}{\\code{%s}}", df$url, sub("igraph_", "", df$method))
 }
 
 find_impl <- function(topic, base_path) {
