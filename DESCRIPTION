@@ -15,8 +15,9 @@ Depends:
 LazyData: true
 URL: https://github.com/igraph/igraph.r2cdocs
 BugReports: https://github.com/igraph/igraph.r2cdocs/issues
-Imports: 
+Imports:
     rlang,
     roxygen2,
     treesitter,
-    treesitter.r
+    treesitter.r,
+    yaml
