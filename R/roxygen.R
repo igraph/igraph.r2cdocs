@@ -214,12 +214,12 @@ find_impl <- function(topic, base_path) {
 
   entries <- xml2::xml_find_all(index, ".//dt")
 
-  clinks <- purrr::map_df(entries, handle_dt)
+  clinks <- purrr::map_df(entries, handle_dt, igraph_version = igraph_version)
   write.csv(clinks, local_cache, row.names = FALSE)
   clinks
 }
 
-handle_dt <- function(dt) {
+handle_dt <- function(dt, igraph_version) {
   href <- xml2::xml_attr(xml2::xml_child(dt), "href")
   url <- sprintf("https://igraph.org/c/html/%s/%s", igraph_version, href)
   method <- sub(".*#", "", href)
