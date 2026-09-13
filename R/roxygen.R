@@ -71,17 +71,51 @@ present_cdocs_link <- function(value, base_path) {
 }
 
 
-format_cdocs_single_link <- function(x, base_path) {
-  # special case
-  if (endsWith(x, "motifs_randesu_callback_closure")) {
-    url <- sprintf(
-      "https://igraph.org/c/html/%s/igraph-Motifs.html#igraph_motifs_randesu_callback",
-      igraph_c_version(base_path)
-    )
+# rigraph's `src/rcallback.c` defines closure shims that exist on the R side
+# only: each one wraps a single C function, and none has a C entry of its own.
+# The wrapped name is mapped explicitly rather than derived by stripping the
+# `_closure` suffix, for two reasons.
+# `igraph_transitive_closure` and `igraph_transitive_closure_dag` are
+# graph-theory functions rather than wrappers, so a suffix rule would have to
+# know to leave them alone.
+# And `community_leading_eigenvector_callback_closure` wraps
+# `igraph_community_leading_eigenvector`, dropping `_callback` along with
+# `_closure`, where every other shim keeps it.
+# Mirrors `closure_map` in rigraph's `tools/rebuild-cats.R`.
+closure_map <- c(
+  "igraph_bfs_closure" = "igraph_bfs",
+  "igraph_dfs_closure" = "igraph_dfs",
+  "igraph_cliques_callback_closure" = "igraph_cliques_callback",
+  "igraph_maximal_cliques_callback_closure" = "igraph_maximal_cliques_callback",
+  "igraph_simple_cycles_callback_closure" = "igraph_simple_cycles_callback",
+  "igraph_get_isomorphisms_vf2_callback_closure" = "igraph_get_isomorphisms_vf2_callback",
+  "igraph_get_subisomorphisms_vf2_callback_closure" = "igraph_get_subisomorphisms_vf2_callback",
+  "igraph_motifs_randesu_callback_closure" = "igraph_motifs_randesu_callback",
+  "igraph_community_leading_eigenvector_callback_closure" = "igraph_community_leading_eigenvector"
+)
 
-    return(
-      sprintf("\\href{%s}{\\code{motifs_randesu_callback_closure()}}", url)
-    )
+# C functions that a public header exports but the C manual does not document,
+# so the index can never carry an entry for them.
+# Reported with a message rather than a warning:
+# the gap is upstream in the C library's own documentation,
+# and neither this package nor the R package calling it can close it.
+# Checked against the `doxrox-include` directives in igraph/igraph's `doc/`.
+undocumented_c_functions <- c(
+  "igraph_eigen_adjacency",
+  "igraph_eigen_matrix",
+  "igraph_eigen_matrix_symmetric",
+  "igraph_has_attribute_table",
+  "igraph_hrg_sample_many",
+  "igraph_residual_graph",
+  "igraph_reverse_residual_graph",
+  "igraph_solve_lsap",
+  "igraph_transitive_closure_dag",
+  "igraph_weighted_sparsemat"
+)
+
+format_cdocs_single_link <- function(x, base_path) {
+  if (x %in% names(closure_map)) {
+    x <- closure_map[[x]]
   }
 
   clinks <- c_links(base_path)
@@ -89,7 +123,11 @@ format_cdocs_single_link <- function(x, base_path) {
   # we can use igraph_ or not
   df <- clinks[clinks$method %in% c(x, sprintf("igraph_%s", x)), ]
   if (nrow(df) == 0) {
-    cli::cli_warn("Can't find C entry for {x}!")
+    if (x %in% undocumented_c_functions) {
+      cli::cli_inform("No C entry for {x}, the C manual does not document it.")
+    } else {
+      cli::cli_warn("Can't find C entry for {x}!")
+    }
     return("")
   }
   sprintf("\\href{%s}{\\code{%s()}}", df$url, sub("igraph_", "", df$method))
