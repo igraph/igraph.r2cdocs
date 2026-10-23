@@ -1,21 +1,8 @@
-
 # igraph.r2cdocs
 
-<!-- badges: start -->
-<!-- badges: end -->
+[![Project Status: Moved to https://github.com/igraph/rigraph/ – The project has been moved to a new location, and the version at that location should be considered authoritative.](https://www.repostatus.org/badges/latest/moved.svg)](https://www.repostatus.org/#moved) to [https://github.com/igraph/rigraph/](https://github.com/igraph/rigraph/)
 
 The goal of igraph.r2cdocs is to help us link C docs from the manual pages of 
 the R functions that calls them.
 
-This package will therefore only be useful for developers of the R igraph package.
-
-Context: https://github.com/igraph/rigraph/issues/1317
-
-## Installation
-
-You can install the development version of igraph.r2cdocs like so:
-
-``` r
-pak::pak("igraph/igraph.r2cdocs")
-```
-
+This code now lives inside the source of the igraph R package.
